@@ -1,0 +1,36 @@
+[versions]
+fabric-loom = "1.17.14"
+fabric-loader = "0.19.5"
+forgegradle = "7.0.31"
+mixin = "0.8.7"
+mod-publish-plugin = "2.2.0"
+neoforged-moddev = "2.0.147"
+slf4j-api = "1.8.0-beta4"
+jsr305 = "3.0.2"
+junit = "5.11.4"
+
+[libraries]
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-loom = { module = "net.fabricmc:fabric-loom", version.ref = "fabric-loom" }
+forgegradle-plugin = { module = "net.minecraftforge.gradle:net.minecraftforge.gradle.gradle.plugin", version.ref = "forgegradle" }
+forge-config-api-port-common = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common" }
+forge-config-api-port-common-neoforge-api = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi" }
+forge-config-api-port-fabric = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric" }
+forge-config-api-port-fabric-legacy = { module = "net.minecraftforge:forgeconfigapiport-fabric" }
+forge-config-api-port-forge = { module = "fuzs.forgeconfigapiport:forgeconfigapiport-forge" }
+minecraft = { module = "com.mojang:minecraft" }
+mixin = { module = "org.spongepowered:mixin" }
+mod-publish-plugin = { module = "me.modmuss50.mod-publish-plugin:me.modmuss50.mod-publish-plugin.gradle.plugin", version.ref = "mod-publish-plugin" }
+night-config-core-legacy = { module = "com.electronwill.night-config:core", version = "3.6.5" }
+neoforged-moddev-gradle = { module = "net.neoforged:moddev-gradle", version.ref = "neoforged-moddev" }
+parchment-data = { module = "org.parchmentmc.data:parchment" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+configured = { module = "curse.maven:configured-457570" }
+forgeconfigscreens = { module = "maven.modrinth:forge-config-screens" }
+modmenu = { module = "maven.modrinth:modmenu" }

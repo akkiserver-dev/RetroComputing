@@ -1,3 +1,7 @@
-# WIP
+# RetroComputing
 
-# Retro Computers
+RetroComputing, a brand-new computing mod for Minecraft. The most important point, it uses Wasmtime in runtime to run anything to fast, no language-dependent, and it has fully persistable like OpenComputers.
+
+## License
+This project licensed under [**MIT License**](LICENSE).
+
