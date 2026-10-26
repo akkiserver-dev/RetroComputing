@@ -1,7 +1,7 @@
 package jp.akkiserver.rc.core.runtime;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 public record MethodInfo(int id, @Nonnull String name, @Nonnull Signature signature, boolean async) {
     public MethodInfo {

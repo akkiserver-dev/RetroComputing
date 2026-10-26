@@ -22,11 +22,13 @@ plugins {
 
 /// Common ///
 include("common")
+include("architecture-shuttle")
+include("emulator")
 
 fun includeMc(minecraftVersion: String, kind: String) {
     val projectName = "$minecraftVersion-$kind"
     include(projectName)
-    project(":$projectName").projectDir = file("$minecraftVersion/$kind")
+    project(":$projectName").projectDir = file("minecraft/$minecraftVersion/$kind")
 }
 
 /// 1.21.1 ///
@@ -53,6 +55,6 @@ includeMc("26.3", "neo")
 
 val ciBuildProjectNames = rootProject.children
     .map { it.name }
-    .filterNot { it == "common" || it.endsWith("-common") }
+    .filterNot { it == "common" || it == "architecture-shuttle" || it == "emulator" || it.endsWith("-common") }
 
 gradle.extensions.extraProperties["ciBuildProjectNames"] = ciBuildProjectNames

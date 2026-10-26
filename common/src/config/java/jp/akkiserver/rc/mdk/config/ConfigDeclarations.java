@@ -8,12 +8,13 @@ import java.util.Objects;
 
 @NullMarked
 public final class ConfigDeclarations {
-    private ConfigDeclarations() {}
+    private ConfigDeclarations() {
+    }
 
     public static List<ConfigDeclaration> append(
-            List<ConfigDeclaration> declarations,
-            ConfigDeclaration target,
-            ConfigEntries entries
+        List<ConfigDeclaration> declarations,
+        ConfigDeclaration target,
+        ConfigEntries entries
     ) {
         var appended = new ArrayList<ConfigDeclaration>(declarations.size());
         var matchedCount = 0;
@@ -36,7 +37,7 @@ public final class ConfigDeclarations {
 
     private static boolean matches(ConfigDeclaration declaration, ConfigDeclaration target) {
         return declaration == target
-                || declaration.equals(target)
-                || declaration.side() == target.side() && Objects.equals(declaration.fileName(), target.fileName());
+            || declaration.equals(target)
+            || declaration.side() == target.side() && Objects.equals(declaration.fileName(), target.fileName());
     }
 }

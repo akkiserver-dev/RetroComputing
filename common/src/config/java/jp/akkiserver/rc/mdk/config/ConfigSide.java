@@ -19,7 +19,9 @@ public enum ConfigSide {
      */
     SYNCED,
 
-    /** Client-only preferences that are not synchronized to the server. */
+    /**
+     * Client-only preferences that are not synchronized to the server.
+     */
     CLIENT;
 
     /**

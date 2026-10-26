@@ -1,21 +1,22 @@
 package net.meatwo310.mdk.build
 
+import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import java.io.File
 import java.util.zip.ZipFile
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 
 class ResourceCompositionTest {
     @get:Rule
     val temporary = TemporaryFolder()
 
     private val targets = listOf("neo", "legacy", "forge", "fabric", "disabled", "optional", "late")
+
     // Highest priority first: project precedence, then source-set precedence.
     private val inputs = listOf(
         Input("platform", "configClient"), Input("platform", "client"),
@@ -41,7 +42,8 @@ class ResourceCompositionTest {
         assertContains(reused.output, "Reusing configuration cache.")
         tasks.forEach { task ->
             // Verification tasks have no outputs and must execute on every build.
-            val expectedOutcome = if (task.endsWith(":verifyRuntimeRoots")) TaskOutcome.SUCCESS else TaskOutcome.UP_TO_DATE
+            val expectedOutcome =
+                if (task.endsWith(":verifyRuntimeRoots")) TaskOutcome.SUCCESS else TaskOutcome.UP_TO_DATE
             assertEquals(expectedOutcome, reused.task(task)?.outcome, task)
         }
         verify(root, cases)
@@ -80,10 +82,12 @@ class ResourceCompositionTest {
     }
 
     private fun prepareBuild(root: File, cases: Map<String, List<Input>>) {
-        write(root.resolve("settings.gradle.kts"), """
+        write(
+            root.resolve("settings.gradle.kts"), """
             rootProject.name = "resource-regression"
             include("common", "version", ${targets.joinToString { "\"$it\"" }})
-        """.trimIndent() + "\n")
+        """.trimIndent() + "\n"
+        )
         copyResource("build.gradle.kts", root.resolve("build.gradle.kts"))
         write(root.resolve("buildSrc/build.gradle.kts"), "plugins { `kotlin-dsl` }\nrepositories { mavenCentral() }\n")
         listOf("SourceSetArtifacts.kt", "ConfigSourceSets.kt", "ResourceComposition.kt").forEach { name ->
@@ -114,10 +118,12 @@ class ResourceCompositionTest {
 
     private fun run(root: File, tasks: List<String>) = GradleRunner.create()
         .withProjectDir(root)
-        .withArguments(tasks + listOf(
-            "--no-parallel", "--max-workers=1", "--configuration-cache", "--configuration-cache-problems=fail",
-            "--stacktrace", "-Dorg.gradle.jvmargs=-Xmx512m", "-Pkotlin.compiler.execution.strategy=in-process",
-        ))
+        .withArguments(
+            tasks + listOf(
+                "--no-parallel", "--max-workers=1", "--configuration-cache", "--configuration-cache-problems=fail",
+                "--stacktrace", "-Dorg.gradle.jvmargs=-Xmx512m", "-Pkotlin.compiler.execution.strategy=in-process",
+            )
+        )
         .build()
 
     private fun verify(root: File, cases: Map<String, List<Input>>) {
@@ -132,9 +138,14 @@ class ResourceCompositionTest {
                 ZipFile(root.resolve("$target/build/libs/$target-sources.jar")).use { sources ->
                     listOf(runtime, sources).forEach { archive ->
                         val entries = archive.entries().asSequence().toList()
-                        assertEquals(entries.size, entries.map { it.name }.toSet().size, "$target: duplicate archive entries")
+                        assertEquals(
+                            entries.size,
+                            entries.map { it.name }.toSet().size,
+                            "$target: duplicate archive entries"
+                        )
                         val actual = entries.filter { it.name.endsWith(".txt") }.associate { entry ->
-                            entry.name to archive.getInputStream(entry).bufferedReader(Charsets.UTF_8).use { it.readText() }
+                            entry.name to archive.getInputStream(entry).bufferedReader(Charsets.UTF_8)
+                                .use { it.readText() }
                         }
                         assertEquals(expected, actual, "$target: ${archive.name}")
                     }

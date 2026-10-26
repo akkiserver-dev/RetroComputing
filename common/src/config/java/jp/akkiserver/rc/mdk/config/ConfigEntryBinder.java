@@ -48,7 +48,7 @@ public final class ConfigEntryBinder implements ConfigVisitor {
     public <T> void bind(ConfigEntry.ListEntry<T> entry) {
         comment(entry.comment());
         var value = adapter.defineList(
-                entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
+            entry.key(), entry.defaultValue(), entry.newElementSupplier(), entry.elementValidator());
         entry.bind(value);
     }
 
@@ -102,7 +102,8 @@ public final class ConfigEntryBinder implements ConfigVisitor {
 
         void worldRestart();
 
-        default void gameRestart() {}
+        default void gameRestart() {
+        }
 
         void push(String key);
 
@@ -121,7 +122,7 @@ public final class ConfigEntryBinder implements ConfigVisitor {
         ConfigEntryBinding<String> defineString(String key, String defaultValue);
 
         <T> ConfigEntryBinding<List<T>> defineList(
-                String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
+            String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator);
 
         <E extends Enum<E>> ConfigEntryBinding<E> defineEnum(String key, E defaultValue);
     }

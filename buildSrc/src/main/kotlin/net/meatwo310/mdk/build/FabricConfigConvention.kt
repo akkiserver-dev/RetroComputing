@@ -3,7 +3,6 @@ package net.meatwo310.mdk.build
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 
 enum class VersionConfigSourceSet {

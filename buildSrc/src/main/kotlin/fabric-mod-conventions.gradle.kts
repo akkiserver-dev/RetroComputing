@@ -39,11 +39,13 @@ base {
 
 sourceSets.main.get().resources.srcDir(generatedModMetadataDir)
 
-fabricModMetadata.depends.putAll(linkedMapOf(
-    "fabricloader" to ">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}",
-    "minecraft" to "~$minecraftVersion",
-    "java" to ">=$javaVersion",
-))
+fabricModMetadata.depends.putAll(
+    linkedMapOf(
+        "fabricloader" to ">=${versionCatalog.version(VersionCatalogVersion.FabricLoader)}",
+        "minecraft" to "~$minecraftVersion",
+        "java" to ">=$javaVersion",
+    )
+)
 
 fun defaultModMetadata(fabricDependencies: Map<String, String>) = linkedMapOf<String, Any?>(
     "schemaVersion" to 1,

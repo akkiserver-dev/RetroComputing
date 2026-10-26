@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  * List<@Unsigned Integer> u32list = new ArrayList<>();
  * }</pre>
  *
- * @since 0.1.0
  * @author akki697222
+ * @since 0.1.0
  */
 @Target({ElementType.TYPE_USE, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

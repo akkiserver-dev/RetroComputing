@@ -1,0 +1,19 @@
+IBM VGA 8x16 / CP437 font
+
+Font remake: VileR, The Ultimate Oldschool PC Font Pack
+https://int10h.org/oldschool-pc-fonts/
+https://int10h.org/oldschool-pc-fonts/readme/#legal_stuff
+
+Bitmap conversion: Susam Pal, PC Face
+https://github.com/susam/pcface
+https://github.com/susam/pcface/blob/main/out/oldschool-vga-8x16/fontlist.js
+
+License: Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+Full license: CC-BY-SA-4.0.txt in this directory.
+
+RC adaptation: converted the PC Face bitmap arrays to Unicode-keyed hexadecimal
+rows, preserving the original glyph pixels. This font data adaptation is also
+licensed under CC BY-SA 4.0. No endorsement is implied.
+
+The font data license is separate from the emulator's Java source code license.

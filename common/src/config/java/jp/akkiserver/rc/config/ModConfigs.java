@@ -10,5 +10,6 @@ public final class ModConfigs {
 
     public static final List<ConfigDeclaration> ALL = List.of(SERVER);
 
-    private ModConfigs() {}
+    private ModConfigs() {
+    }
 }

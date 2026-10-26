@@ -1,6 +1,5 @@
 package net.meatwo310.mdk.build
 
-import java.io.File
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
@@ -15,6 +14,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import java.io.File
 
 /** Replace every original copy of a composed resource, including copies in nested CopySpecs. */
 private class ComposedResourceFilter(private val directory: File) : Action<FileCopyDetails> {
@@ -62,17 +62,19 @@ class ResourceComposition internal constructor(private val project: Project) {
                 include(project, this)
             }
         project.afterEvaluate {
-            val ordered = sources.sortedWith(compareBy<ResourceSource>(
-                { if (it.owner == project) 0 else if (it.owner.path == ":common") 2 else 1 },
-                {
-                    when (it.sourceSet.name) {
-                        "configClient" -> 0
-                        "client" -> 1
-                        "config" -> 2
-                        else -> 3
-                    }
-                },
-            ))
+            val ordered = sources.sortedWith(
+                compareBy<ResourceSource>(
+                    { if (it.owner == project) 0 else if (it.owner.path == ":common") 2 else 1 },
+                    {
+                        when (it.sourceSet.name) {
+                            "configClient" -> 0
+                            "client" -> 1
+                            "config" -> 2
+                            else -> 3
+                        }
+                    },
+                )
+            )
             this@ResourceComposition.resources.configure {
                 for ((owner, sourceSet) in ordered) {
                     dependsOn(owner.tasks.named(sourceSet.processResourcesTaskName))

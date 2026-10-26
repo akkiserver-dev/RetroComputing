@@ -11,26 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WireTypeResolverTest {
 
-    @SuppressWarnings("unused")
-    static class Sample {
-        void write(@Unsigned short x, @Unsigned short y, String s, @Unsigned short attr) {}
-        @Unsigned short getMode() { return 0; }
-        void place(int x, int y, int z) {}
-        long mixed(boolean b, byte a, @Unsigned byte c, char d, float e, double f) { return 0; }
-        byte[] signedBytes(byte[] in) { return in; }
-        @Unsigned byte[] unsignedBytes(@Unsigned byte[] in) { return in; }
-        String[] names(int[] a, @Unsigned int[] b, long[] c) { return null; }
-        void unsignedBool(@Unsigned boolean b) {}
-        void unsignedString(@Unsigned String s) {}
-        void unsignedChar(@Unsigned char c) {}
-        void unsignedChars(@Unsigned char[] chars) {}
-        @Unsigned char[] unsignedCharResult() { return new char[0]; }
-        @Unsigned void unsignedVoid() {}
-        void boxed(Integer i) {}
-        void nested(int[][] i) {}
-        void object(Object o) {}
-    }
-
     private static Method method(String name) {
         for (Method m : Sample.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -93,5 +73,66 @@ class WireTypeResolverTest {
         assertEquals(WireType.parse("u64"), WireTypeResolver.of(long.class, true));
         assertEquals(WireType.parse("u16"), WireTypeResolver.of(char.class, false));
         assertEquals(WireType.VOID, WireTypeResolver.of(void.class, false));
+    }
+
+    @SuppressWarnings("unused")
+    static class Sample {
+        void write(@Unsigned short x, @Unsigned short y, String s, @Unsigned short attr) {
+        }
+
+        @Unsigned
+        short getMode() {
+            return 0;
+        }
+
+        void place(int x, int y, int z) {
+        }
+
+        long mixed(boolean b, byte a, @Unsigned byte c, char d, float e, double f) {
+            return 0;
+        }
+
+        byte[] signedBytes(byte[] in) {
+            return in;
+        }
+
+        @Unsigned
+        byte[] unsignedBytes(@Unsigned byte[] in) {
+            return in;
+        }
+
+        String[] names(int[] a, @Unsigned int[] b, long[] c) {
+            return null;
+        }
+
+        void unsignedBool(@Unsigned boolean b) {
+        }
+
+        void unsignedString(@Unsigned String s) {
+        }
+
+        void unsignedChar(@Unsigned char c) {
+        }
+
+        void unsignedChars(@Unsigned char[] chars) {
+        }
+
+        @Unsigned
+        char[] unsignedCharResult() {
+            return new char[0];
+        }
+
+        @Unsigned
+        void unsignedVoid() {
+        }
+
+        void boxed(Integer i) {
+        }
+
+        void nested(int[][] i) {
+        }
+
+        void object(Object o) {
+        }
     }
 }

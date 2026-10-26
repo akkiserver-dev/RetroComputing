@@ -3,16 +3,29 @@ package jp.akkiserver.rc.core.runtime;
 import jp.akkiserver.rc.api.runtime.Export;
 import jp.akkiserver.rc.api.runtime.Module;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 public final class MethodTable {
     private static final int MAX_EXPORTS = 0xFFFF;
+    private static final ClassValue<Layout> LAYOUTS = new ClassValue<>() {
+        @Override
+        protected Layout computeValue(@Nonnull Class<?> type) {
+            validateExports(type);
+            List<Method> exports = collectExports(type);
+            validateNames(exports);
+            for (Method method : exports) {
+                if (!method.trySetAccessible()) throw new IllegalArgumentException("Inaccessible export: " + method);
+            }
+            return new Layout(List.copyOf(exports), List.copyOf(createInfos(exports)));
+        }
+    };
+
     private final Object target;
     private final List<Method> exports;
     private final List<MethodInfo> methods;
@@ -23,10 +36,6 @@ public final class MethodTable {
         this.methods = List.copyOf(methods);
     }
 
-    public List<MethodInfo> methods() {
-        return methods;
-    }
-
     public static MethodTable create(@Nonnull Object target) {
         Objects.requireNonNull(target);
 
@@ -34,12 +43,8 @@ public final class MethodTable {
             throw new IllegalArgumentException("target is not a module");
         }
 
-        validateExports(target.getClass());
-        List<Method> exports = collectExports(target.getClass());
-        validateNames(exports);
-        List<MethodInfo> methods = createInfos(exports);
-
-        return new MethodTable(target, exports, methods);
+        Layout layout = LAYOUTS.get(target.getClass());
+        return new MethodTable(target, layout.exports(), layout.methods());
     }
 
     private static void validateExports(@Nonnull Class<?> type) {
@@ -59,6 +64,7 @@ public final class MethodTable {
         if (parent != null) {
             validateExports(parent);
         }
+        for (Class<?> iface : type.getInterfaces()) validateExports(iface);
     }
 
     private static List<Method> collectExports(Class<?> type) {
@@ -105,5 +111,28 @@ public final class MethodTable {
             ));
         }
         return methods;
+    }
+
+    public List<MethodInfo> methods() {
+        return methods;
+    }
+
+    public boolean contains(int id) {
+        return id >= 0 && id < methods.size();
+    }
+
+    public MethodInfo method(int id) {
+        return methods.get(id);
+    }
+
+    public Method javaMethod(int id) {
+        return exports.get(id);
+    }
+
+    Object target() {
+        return target;
+    }
+
+    private record Layout(List<Method> exports, List<MethodInfo> methods) {
     }
 }

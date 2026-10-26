@@ -34,13 +34,13 @@ topo_order = false
 sort_commits = "newest"
 
 commit_preprocessors = [
-  { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
+    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
 ]
 
 commit_parsers = [
-  { message = "^mdk", group = "<!-- 9 -->MDK" },
-  { field = "breaking", pattern = "true", group = "<!-- 0 -->Breaking Changes" },
-  { message = "^feat", group = "<!-- 1 -->Added" },
-  { message = "^fix", group = "<!-- 2 -->Fixed" },
-  { message = "^perf", group = "<!-- 3 -->Performance" },
+    { message = "^mdk", group = "<!-- 9 -->MDK" },
+    { field = "breaking", pattern = "true", group = "<!-- 0 -->Breaking Changes" },
+    { message = "^feat", group = "<!-- 1 -->Added" },
+    { message = "^fix", group = "<!-- 2 -->Fixed" },
+    { message = "^perf", group = "<!-- 3 -->Performance" },
 ]

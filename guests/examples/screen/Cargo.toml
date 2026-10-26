@@ -1,0 +1,13 @@
+[package]
+name = "rc-screen-guest"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+rc-shuttle-abi = { path = "../../../abi/rust" }
+
+[lib]
+crate-type = ["cdylib"]
+test = false
+doctest = false

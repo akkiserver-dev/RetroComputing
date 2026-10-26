@@ -2,11 +2,12 @@ package jp.akkiserver.rc.core.runtime;
 
 import jp.akkiserver.rc.api.runtime.Unsigned;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Decides the {@link WireType} of a Java type.
@@ -62,7 +63,7 @@ public final class WireTypeResolver {
      */
     public static WireType forParameter(Parameter parameter) {
         boolean unsigned = parameter.isAnnotationPresent(Unsigned.class)
-                || isUnsigned(parameter.getAnnotatedType());
+            || isUnsigned(parameter.getAnnotatedType());
         return of(parameter.getType(), unsigned);
     }
 
@@ -74,7 +75,7 @@ public final class WireTypeResolver {
      */
     public static WireType forReturn(Method method) {
         boolean unsigned = method.isAnnotationPresent(Unsigned.class)
-                || isUnsigned(method.getAnnotatedReturnType());
+            || isUnsigned(method.getAnnotatedReturnType());
         return of(method.getReturnType(), unsigned);
     }
 
@@ -85,7 +86,7 @@ public final class WireTypeResolver {
      */
     public static Signature forMethod(Method method) {
         Parameter[] parameters = method.getParameters();
-        java.util.List<WireType> params = new java.util.ArrayList<>(parameters.length);
+        List<WireType> params = new ArrayList<>(parameters.length);
         for (Parameter p : parameters) {
             params.add(forParameter(p));
         }

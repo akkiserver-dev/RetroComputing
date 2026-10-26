@@ -1,0 +1,9 @@
+[package]
+name = "rc-shuttle-abi"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "Raw no_std guest bindings for RC's Shuttle firmware ABI 0.1"
+
+[lib]
+path = "src/lib.rs"

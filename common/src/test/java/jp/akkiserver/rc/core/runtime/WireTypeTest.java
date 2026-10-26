@@ -29,14 +29,14 @@ class WireTypeTest {
 
     @Test
     void codeRoundTrips() {
-        for (int code : new int[] {0x00, 0x01, 0x0C, 0x81, 0x85, 0x8C}) {
+        for (int code : new int[]{0x00, 0x01, 0x0C, 0x81, 0x85, 0x8C}) {
             assertEquals(code, WireType.fromCode(code).code());
         }
     }
 
     @Test
     void textRoundTrips() {
-        for (String text : new String[] {"void", "bool", "i32", "u64[]", "string", "string[]", "f32[]"}) {
+        for (String text : new String[]{"void", "bool", "i32", "u64[]", "string", "string[]", "f32[]"}) {
             assertEquals(text, WireType.parse(text).toString());
         }
     }

@@ -1,0 +1,12 @@
+[workspace]
+resolver = "3"
+members = ["abi/rust", "guests/examples/screen", "guests/examples/child-hello"]
+default-members = ["abi/rust"]
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+lto = true
+
+[profile.dev]
+panic = "abort"

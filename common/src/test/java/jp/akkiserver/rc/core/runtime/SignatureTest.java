@@ -15,8 +15,8 @@ class SignatureTest {
     void parsesArgumentsAndReturn() {
         Signature s = Signature.parse("u16 u16 string u16 -> void");
         assertEquals(List.of(
-                WireType.parse("u16"), WireType.parse("u16"),
-                WireType.parse("string"), WireType.parse("u16")), s.params());
+            WireType.parse("u16"), WireType.parse("u16"),
+            WireType.parse("string"), WireType.parse("u16")), s.params());
         assertEquals(WireType.VOID, s.ret());
     }
 
@@ -41,8 +41,8 @@ class SignatureTest {
 
     @Test
     void formatsBackToTheSameText() {
-        for (String text : new String[] {
-                "u16 u16 string u16 -> void", "-> u16", "-> void", "u32 u8[] -> i32"}) {
+        for (String text : new String[]{
+            "u16 u16 string u16 -> void", "-> u16", "-> void", "u32 u8[] -> i32"}) {
             assertEquals(text, Signature.parse(text).toString());
         }
     }

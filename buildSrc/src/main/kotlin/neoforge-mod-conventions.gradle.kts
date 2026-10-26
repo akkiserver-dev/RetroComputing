@@ -1,8 +1,4 @@
-import net.meatwo310.mdk.build.configureCiRuntimeMods
-import net.meatwo310.mdk.build.configurePlatformArtifacts
-import net.meatwo310.mdk.build.developmentModSourceSet
-import net.meatwo310.mdk.build.includeSourceSetArtifacts
-import net.meatwo310.mdk.build.supportsGameTestServer
+import net.meatwo310.mdk.build.*
 
 plugins {
     `java-library`

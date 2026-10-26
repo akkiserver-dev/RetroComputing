@@ -22,7 +22,9 @@ import java.util.Objects;
  */
 public record Signature(List<WireType> params, WireType ret) {
 
-    /** The most arguments a method may have (the count is one byte in {@code dev_describe}). */
+    /**
+     * The most arguments a method may have (the count is one byte in {@code dev_describe}).
+     */
     public static final int MAX_PARAMS = 255;
 
     private static final String ARROW = "->";
@@ -76,7 +78,9 @@ public record Signature(List<WireType> params, WireType ret) {
         return new Signature(params, WireType.parse(right));
     }
 
-    /** The text form, such as {@code "u16 u16 -> void"}. */
+    /**
+     * The text form, such as {@code "u16 u16 -> void"}.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

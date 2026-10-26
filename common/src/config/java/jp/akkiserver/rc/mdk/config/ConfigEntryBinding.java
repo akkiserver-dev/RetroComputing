@@ -4,15 +4,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public interface ConfigEntryBinding<T> extends Supplier<T> {
-    void set(T value);
-
-    void flush();
-
-    default void setAndFlush(T value) {
-        set(value);
-        flush();
-    }
-
     static <T> ConfigEntryBinding<T> of(Supplier<T> getter, Consumer<T> setter, Runnable flusher) {
         return new ConfigEntryBinding<>() {
             @Override
@@ -68,5 +59,14 @@ public interface ConfigEntryBinding<T> extends Supplier<T> {
                 throw new IllegalStateException("Config entry is not bound");
             }
         };
+    }
+
+    void set(T value);
+
+    void flush();
+
+    default void setAndFlush(T value) {
+        set(value);
+        flush();
     }
 }

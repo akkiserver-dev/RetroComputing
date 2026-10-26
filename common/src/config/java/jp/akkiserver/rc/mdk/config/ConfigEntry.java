@@ -1,7 +1,12 @@
 package jp.akkiserver.rc.mdk.config;
 
 import java.util.List;
-import java.util.function.*;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.LongSupplier;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
     private final String key, comment;
@@ -61,7 +66,6 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         public Range<T> range() {
             return range;
         }
-
     }
 
     public static class IntEntry extends RangedValueEntry<Integer> implements IntSupplier {
@@ -160,11 +164,11 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         private final Predicate<Object> elementValidator;
 
         public ListEntry(
-                String key,
-                String comment,
-                List<T> defaultValue,
-                Supplier<T> newElementSupplier,
-                Predicate<Object> elementValidator) {
+            String key,
+            String comment,
+            List<T> defaultValue,
+            Supplier<T> newElementSupplier,
+            Predicate<Object> elementValidator) {
             super(key, comment, List.copyOf(defaultValue));
             this.newElementSupplier = newElementSupplier;
             this.elementValidator = elementValidator;
@@ -202,5 +206,6 @@ public abstract class ConfigEntry<T> implements Supplier<T>, ConfigElement {
         }
     }
 
-    public record Range<T extends Comparable<T>>(T min, T max) {}
+    public record Range<T extends Comparable<T>>(T min, T max) {
+    }
 }

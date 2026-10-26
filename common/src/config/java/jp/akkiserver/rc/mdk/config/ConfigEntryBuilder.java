@@ -85,14 +85,14 @@ public class ConfigEntryBuilder {
     }
 
     public <T> ConfigEntry.ListEntry<T> defineList(
-            String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
+        String key, List<T> defaultValue, Supplier<T> newElementSupplier, Predicate<Object> elementValidator) {
         return register(new ConfigEntry.ListEntry<>(
-                key, pendingComment, defaultValue, newElementSupplier, elementValidator));
+            key, pendingComment, defaultValue, newElementSupplier, elementValidator));
     }
 
     public <E extends Enum<E>> ConfigEntry.EnumEntry<E> defineEnum(String key, E defaultValue) {
         return register(new ConfigEntry.EnumEntry<>(
-                key, pendingComment, defaultValue, defaultValue.getDeclaringClass()));
+            key, pendingComment, defaultValue, defaultValue.getDeclaringClass()));
     }
 
     public ConfigEntries category(String key, ConfigEntries children) {

@@ -5,9 +5,19 @@ import org.junit.jupiter.api.Test;
 import java.util.HexFormat;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WireReaderTest {
+    private static byte[] hex(String value) {
+        return HexFormat.of().parseHex(value.replaceAll("\\s+", ""));
+    }
+
     @Test
     void readsMixedValuesSequentiallyUsingTheAbiByteLayout() {
         WireReader reader = new WireReader(hex("""
@@ -66,7 +76,7 @@ class WireReaderTest {
             01
             """));
 
-        assertArrayEquals(new String[] {"", "A", "\u65e5\u672c"}, reader.readStringArray());
+        assertArrayEquals(new String[]{"", "A", "\u65e5\u672c"}, reader.readStringArray());
         assertTrue(reader.readBoolean());
         reader.requireEnd();
     }
@@ -123,11 +133,11 @@ class WireReaderTest {
             78 56 34 12
             """));
 
-        assertArrayEquals(new long[] {0x0102_0304_0506_0708L, Long.MIN_VALUE}, reader.readLongArray());
-        assertArrayEquals(new char[] {'\u3042', '\uffff'}, reader.readCharArray());
-        assertArrayEquals(new float[] {1.5f, -2.5f}, reader.readFloatArray());
-        assertArrayEquals(new double[] {1.5, -2.5}, reader.readDoubleArray());
-        assertArrayEquals(new boolean[] {true, false, true}, reader.readBooleanArray());
+        assertArrayEquals(new long[]{0x0102_0304_0506_0708L, Long.MIN_VALUE}, reader.readLongArray());
+        assertArrayEquals(new char[]{'\u3042', '\uffff'}, reader.readCharArray());
+        assertArrayEquals(new float[]{1.5f, -2.5f}, reader.readFloatArray());
+        assertArrayEquals(new double[]{1.5, -2.5}, reader.readDoubleArray());
+        assertArrayEquals(new boolean[]{true, false, true}, reader.readBooleanArray());
         assertEquals(0x12345678, reader.readInt());
     }
 
@@ -135,7 +145,7 @@ class WireReaderTest {
     void readsShortArrayElementsAndTheFollowingValue() {
         WireReader reader = new WireReader(hex("03 00 00 00 34 12 00 80 ff ff 01"));
 
-        assertArrayEquals(new short[] {0x1234, Short.MIN_VALUE, -1}, reader.readShortArray());
+        assertArrayEquals(new short[]{0x1234, Short.MIN_VALUE, -1}, reader.readShortArray());
         assertTrue(reader.readBoolean());
     }
 
@@ -143,7 +153,7 @@ class WireReaderTest {
     void readsIntArrayElementsAndTheFollowingValue() {
         WireReader reader = new WireReader(hex("02 00 00 00 78 56 34 12 ff ff ff ff 01"));
 
-        assertArrayEquals(new int[] {0x12345678, -1}, reader.readIntArray());
+        assertArrayEquals(new int[]{0x12345678, -1}, reader.readIntArray());
         assertTrue(reader.readBoolean());
     }
 
@@ -241,9 +251,5 @@ class WireReaderTest {
             WireReader reader = new WireReader(hex(payload));
             assertThrows(IllegalArgumentException.class, reader::readString);
         }
-    }
-
-    private static byte[] hex(String value) {
-        return HexFormat.of().parseHex(value.replaceAll("\\s+", ""));
     }
 }

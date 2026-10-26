@@ -3,10 +3,17 @@ package jp.akkiserver.rc.core.runtime;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public final class MethodCodec {
+    private MethodCodec() {
+    }
+
     public static Object[] decodeArguments(Method method, byte[] data) {
-        Class<?>[] params = method.getParameterTypes();
+        return decodeArguments(method.getParameterTypes(), data);
+    }
+
+    public static Object[] decodeArguments(Class<?>[] params, byte[] data) {
         WireReader reader = new WireReader(data);
         Object[] args = new Object[params.length];
         for (int i = 0; i < params.length; i++) {
@@ -14,6 +21,54 @@ public final class MethodCodec {
         }
         reader.requireEnd();
         return args;
+    }
+
+    public static byte[] encodeArguments(Class<?>[] types, Object[] values) {
+        validateArguments(types, values);
+        WireWriter writer = new WireWriter();
+        for (int i = 0; i < types.length; i++) writer.write(types[i], values[i]);
+        return writer.toByteArray();
+    }
+
+    public static byte[] encodeReturn(Method method, Object value) {
+        return encodeReturn(method.getReturnType(), value);
+    }
+
+    public static byte[] encodeReturn(Class<?> type, Object value) {
+        WireWriter writer = new WireWriter();
+        writer.write(type, value);
+        return writer.toByteArray();
+    }
+
+    public static void validateArguments(Class<?>[] types, Object[] values) {
+        Objects.requireNonNull(values, "values");
+        if (types.length != values.length) throw new IllegalArgumentException("Argument count mismatch");
+        for (int i = 0; i < types.length; i++) validateValue(types[i], values[i]);
+    }
+
+    public static void validateValue(Class<?> type, Object value) {
+        Objects.requireNonNull(type, "type");
+        if (type == void.class) {
+            if (value != null) throw new IllegalArgumentException("void has no value");
+            return;
+        }
+        WireTypeResolver.of(type, false);
+        Objects.requireNonNull(value, "Device values must not be null");
+        Class<?> expected = type.isPrimitive() ? switch (type.getName()) {
+            case "boolean" -> Boolean.class;
+            case "byte" -> Byte.class;
+            case "short" -> Short.class;
+            case "char" -> Character.class;
+            case "int" -> Integer.class;
+            case "long" -> Long.class;
+            case "float" -> Float.class;
+            case "double" -> Double.class;
+            default -> throw new IllegalArgumentException("Unsupported type: " + type);
+        } : type;
+        if (value.getClass() != expected) throw new IllegalArgumentException("Expected " + expected.getTypeName());
+        if (type == String[].class) {
+            for (String text : (String[]) value) Objects.requireNonNull(text, "Null string element");
+        }
     }
 
     public static byte[] describe(MethodTable table) {
@@ -69,8 +124,5 @@ public final class MethodCodec {
     private static void writeU16(ByteArrayOutputStream out, int value) {
         out.write(value & 0xFF);
         out.write((value >>> 8) & 0xFF);
-    }
-
-    private MethodCodec() {
     }
 }
